@@ -1,0 +1,6 @@
+__pycache__
+data/anki
+data/CCMatrix
+models
+tests*
+weights
