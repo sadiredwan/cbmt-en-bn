@@ -32,3 +32,7 @@ translator = Translator(encoder=train_translator.encoder,
                         decoder=train_translator.decoder,
                         input_text_processor=input_text_processor,
                         output_text_processor=output_text_processor)
+
+export = Export(translator)
+
+tf.saved_model.save(export, 'models/translator', signatures={'serving_default': export.translate})

@@ -307,3 +307,12 @@ def tf_translate(self, input_text):
     return self.translate(input_text)
 
 Translator.tf_translate = tf_translate
+
+
+class Export(tf.Module):
+    def __init__(self, model):
+        self.model = model
+
+    @tf.function(input_signature=[tf.TensorSpec(dtype=tf.string, shape=[None])])
+    def translate(self, inputs):
+        return self.model.translate(inputs)
