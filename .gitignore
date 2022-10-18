@@ -1,6 +1,9 @@
 __pycache__
 data/anki
 data/CCMatrix
+data/opensub
+data/tatoeba
+histories
 models
 tests*
 weights

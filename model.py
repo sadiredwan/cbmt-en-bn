@@ -5,6 +5,7 @@ import typing
 from typing import Any, Tuple
 from features import *
 
+
 class Encoder(tf.keras.layers.Layer):
     def __init__(self, input_vocab_size, embedding_dim, enc_units):
         super(Encoder, self).__init__()

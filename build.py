@@ -3,6 +3,7 @@ import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from model import *
 import tensorflow as tf
+import pickle
 
 
 embedding_dim = 256
@@ -11,7 +12,7 @@ units = 1024
 dataset,\
     input_text_processor,\
         output_text_processor,\
-            input_vocab, output_vocab = build_vocab('data/anki/bn-en.txt')
+            input_vocab, output_vocab = build_vocab('data/tatoeba/en-bn.txt')
 
 decoder = Decoder(output_text_processor.vocabulary_size(),
                   embedding_dim,
@@ -26,7 +27,7 @@ train_translator.compile(optimizer=tf.optimizers.Adam(), loss=MaskedLoss())
 
 batch_loss = BatchLogs('batch_loss')
 
-train_translator.fit(dataset, epochs=int(sys.argv[1]), callbacks=[batch_loss])
+history = train_translator.fit(dataset, epochs=int(sys.argv[1]), callbacks=[batch_loss])
 
 translator = Translator(encoder=train_translator.encoder,
                         decoder=train_translator.decoder,
@@ -36,3 +37,5 @@ translator = Translator(encoder=train_translator.encoder,
 export = Export(translator)
 
 tf.saved_model.save(export, 'models/translator', signatures={'serving_default': export.translate})
+
+pickle.dump(history.history, open('histories/train.pickle', 'wb'))
